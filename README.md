@@ -7,6 +7,6 @@ Foco:
     processamento de sinais digitais, e com isso conseguir a interação com a assistente.
 
 Tecnologias:
-    Reconhecimento de voz.
+    Reconhecimento de voz(Google para reconhecimeno online e Vosk para reconhecimento offline).
     Síntese de voz.
     Alguem de IA.
