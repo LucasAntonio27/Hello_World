@@ -58,6 +58,22 @@ with sr.Microphone() as source:
             robot.main()
             playsound("robot.wav")
             break
+        elif fala == ("inverter"):
+            speak("Você solicitou a função inverter")
+            speak("Iniciando gravação do trecho de áudio em 3...2...1...")
+            gravacao = sd.rec(int(duracao * freq), samplerate=freq, channels=2)
+            sd.wait()
+            wv.write("stereo_audio.wav", gravacao, freq, sampwidth=2)
+            robot.main()
+            playsound("invert.wav")
+        elif fala == ("filtro baixo"):
+            speak("Você solicitou a função filtro baixo")
+            speak("Iniciando gravação do trecho de áudio em 3...2...1...")
+            gravacao = sd.rec(int(duracao * freq), samplerate=freq, channels=2)
+            sd.wait()
+            wv.write("stereo_audio.wav", gravacao, freq, sampwidth=2)
+            robot.main()
+            playsound("baixo.wav")
         else:
             print("\"\"")
 
