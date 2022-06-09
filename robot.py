@@ -51,7 +51,7 @@ def raw_diode(signal):
     return result
 
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 def main():
     """
     Program to make a robot voice by simulating a ring modulator;

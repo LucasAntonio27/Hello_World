@@ -14,10 +14,10 @@ def main():
     N = int(T * fsseis)  # pontos por periodo de echo
 
     sieis = seis[-1::-1]
-    plt.plot(sieis)
-    plt.title('Trecho invertido no tempo')
-    plt.grid()
-    plt.show()
+    #plt.plot(sieis)
+    #plt.title('Trecho invertido no tempo')
+    #plt.grid()
+    #plt.show()
 
     # para ouvir:
     fname = 'invert.wav'
