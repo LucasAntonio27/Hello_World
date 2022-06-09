@@ -36,27 +36,27 @@ def interpret_wav(raw_bytes, n_frames, n_channels, sample_width, interleaved = T
         channels.shape = (n_channels, n_frames)
 
     return channels
+def main():
+    with contextlib.closing(wave.open(fname,'rb')) as spf:
+        sampleRate = spf.getframerate()
+        ampWidth = spf.getsampwidth()
+        nChannels = spf.getnchannels()
+        nFrames = spf.getnframes()
 
-with contextlib.closing(wave.open(fname,'rb')) as spf:
-    sampleRate = spf.getframerate()
-    ampWidth = spf.getsampwidth()
-    nChannels = spf.getnchannels()
-    nFrames = spf.getnframes()
+        # Extract Raw Audio from multi-channel Wav File
+        signal = spf.readframes(nFrames*nChannels)
+        spf.close()
+        channels = interpret_wav(signal, nFrames, nChannels, ampWidth, True)
 
-    # Extract Raw Audio from multi-channel Wav File
-    signal = spf.readframes(nFrames*nChannels)
-    spf.close()
-    channels = interpret_wav(signal, nFrames, nChannels, ampWidth, True)
+        # get window size
+        # from http://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-frequency-of-a-moving-average-filter
+        freqRatio = (cutOffFrequency/sampleRate)
+        N = int(math.sqrt(0.196196 + freqRatio**2)/freqRatio)
 
-    # get window size
-    # from http://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-frequency-of-a-moving-average-filter
-    freqRatio = (cutOffFrequency/sampleRate)
-    N = int(math.sqrt(0.196196 + freqRatio**2)/freqRatio)
+        # Use moviung average (only on first channel)
+        filtered = running_mean(channels[0], N).astype(channels.dtype)
 
-    # Use moviung average (only on first channel)
-    filtered = running_mean(channels[0], N).astype(channels.dtype)
-
-    wav_file = wave.open(outname, "w")
-    wav_file.setparams((1, ampWidth, sampleRate, nFrames, spf.getcomptype(), spf.getcompname()))
-    wav_file.writeframes(filtered.tobytes('C'))
-    wav_file.close()
+        wav_file = wave.open(outname, "w")
+        wav_file.setparams((1, ampWidth, sampleRate, nFrames, spf.getcomptype(), spf.getcompname()))
+        wav_file.writeframes(filtered.tobytes('C'))
+        wav_file.close()

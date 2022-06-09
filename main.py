@@ -6,6 +6,8 @@ from playsound import playsound
 import pyttsx3
 import wavio as wv
 import robot
+import invert
+import low
 import numpy as np
 import scipy.io.wavfile as wavfile
 from waveshaper import Waveshaper
@@ -37,9 +39,12 @@ engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[-2].id)
 
+
 def speak(text):
-   engine.say(text)
-   engine.runAndWait()
+    engine.say(text)
+    engine.runAndWait()
+
+
 r = sr.Recognizer()
 
 speak("Olá, no que posso lhe ajudar?")
@@ -51,7 +56,7 @@ with sr.Microphone() as source:
         if fala == ("robotizar" or "robotizar robotizar"):
             speak("Você solicitou a função robotizar")
             speak("Iniciando gravação do trecho de áudio em 3...2...1...")
-            
+
             gravacao = sd.rec(int(duracao * freq), samplerate=freq, channels=2)
             sd.wait()
             wv.write("stereo_audio.wav", gravacao, freq, sampwidth=2)
@@ -64,7 +69,7 @@ with sr.Microphone() as source:
             gravacao = sd.rec(int(duracao * freq), samplerate=freq, channels=2)
             sd.wait()
             wv.write("stereo_audio.wav", gravacao, freq, sampwidth=2)
-            robot.main()
+            invert.main()
             playsound("invert.wav")
         elif fala == ("filtro baixo"):
             speak("Você solicitou a função filtro baixo")
@@ -72,8 +77,7 @@ with sr.Microphone() as source:
             gravacao = sd.rec(int(duracao * freq), samplerate=freq, channels=2)
             sd.wait()
             wv.write("stereo_audio.wav", gravacao, freq, sampwidth=2)
-            robot.main()
+            low.main()
             playsound("baixo.wav")
         else:
             print("\"\"")
-
